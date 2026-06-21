@@ -32,7 +32,6 @@ class Civilian:
     state: str = "neutral"  # neutral, discontent, latent, active
     active: bool = False
     exposed: bool = False
-    active_ticks: int = 0
 
     def clamp(self) -> None:
         self.anger = float(np.clip(self.anger, 0.0, 1.0))
@@ -255,13 +254,6 @@ class CoinModel:
         if not is_latent:
             civ.active = False
             civ.exposed = False
-            civ.active_ticks = 0
-        else:
-            if civ.active_ticks > 0:
-                civ.active_ticks -= 1
-                if civ.active_ticks == 0:
-                    civ.active = False
-                    civ.exposed = False
 
         if civ.active:
             civ.state = "active"
@@ -383,7 +375,6 @@ class CoinModel:
 
         insurgent.active = True
         insurgent.exposed = True
-        insurgent.active_ticks = 3
         self.recent_attacks += 1
 
         target_soldier = self.rng.choice(nearby_soldiers)
@@ -414,7 +405,6 @@ class CoinModel:
         if self.rng.random() < self.p_iewr:
             insurgent.active = True
             insurgent.exposed = True
-            insurgent.active_ticks = 3
             nearby_soldiers = self.soldiers_in_range(insurgent.x, insurgent.y, self.interaction_range)
             if nearby_soldiers:
                 self.recent_attacks += 1
