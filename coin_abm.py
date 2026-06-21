@@ -589,16 +589,29 @@ class CoinModel:
     def plot_histories(self, ax: plt.Axes) -> None:
         ax.clear()
         ax.set_title("Actors")
-        ax.set_xlabel("Ticks")
-        ax.set_ylabel("Count")
+        ax.set_xlabel("time")
+        ax.set_ylabel("number")
 
-        ax.plot(self.history["tick"], self.history["total_civilians"], color="tab:blue", label="Total civilians")
-        ax.plot(self.history["tick"], self.history["active_insurgents"], color="red", label="Active insurgents")
-        ax.plot(self.history["tick"], self.history["latent_insurgents"], color="green", label="Latent insurgents")
-        ax.plot(self.history["tick"], self.history["cumulative_killed"], color="black", label="Cumulative insurgents killed")
+        ax.plot(self.history["tick"], self.history["active_insurgents"], color="red", label="Active Insurgents")
+        ax.plot(self.history["tick"], self.history["total_civilians"], color="blue", label="Civilians")
+        ax.plot(self.history["tick"], self.history["latent_insurgents"], color="cyan", label="Latent Insurgents")
+        ax.plot(self.history["tick"], self.history["cumulative_killed"], color="black", label="Civilian Deaths")
+
+        # Smooth recent attacks with a 100-tick rolling sum
+        attacks = self.history["recent_attacks"]
+        window_size = 100
+        smoothed_attacks = []
+        current_sum = 0
+        for i, val in enumerate(attacks):
+            current_sum += val
+            if i >= window_size:
+                current_sum -= attacks[i - window_size]
+            smoothed_attacks.append(current_sum)
+
+        ax.plot(self.history["tick"], smoothed_attacks, color="orange", label="Recent Attacks")
 
         ax.set_xlim(0, max(1, self.tick_count))
-        ax.legend(loc="upper left", fontsize=8)
+        ax.legend(loc="upper right", fontsize=8)
 
     def plot_anger_fear(self, ax: plt.Axes) -> None:
         ax.clear()
