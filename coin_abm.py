@@ -16,10 +16,7 @@ import seaborn as sns
 
 sns.set_theme(style="whitegrid")
 
-
-# ---------------------------------------------------------------------
 # Data models
-# ---------------------------------------------------------------------
 
 @dataclass
 class Civilian:
@@ -47,9 +44,7 @@ class Soldier:
     attacked_this_tick: bool = False
 
 
-# ---------------------------------------------------------------------
 # Core model
-# ---------------------------------------------------------------------
 
 class CoinModel:
     """
@@ -139,9 +134,9 @@ class CoinModel:
         self.recompute_states()
         self._record_history()
 
-    # -----------------------------------------------------------------
+  
     # Initialization
-    # -----------------------------------------------------------------
+ 
 
     def _sample_truncated_normal(self, mean: float, sd: float, low: float = 0.0, high: float = 1.0) -> float:
         while True:
@@ -195,9 +190,7 @@ class CoinModel:
             self._next_civilian_id += 1
             self._place_civilian(civ)
 
-    # -----------------------------------------------------------------
     # Spatial helpers
-    # -----------------------------------------------------------------
 
     def in_bounds(self, x: int, y: int) -> bool:
         return 0 <= x < self.grid_size and 0 <= y < self.grid_size
@@ -234,9 +227,7 @@ class CoinModel:
         cells = set(self.moore_cells(x, y, radius))
         return [s for s in self.soldiers.values() if (s.x, s.y) in cells]
 
-    # -----------------------------------------------------------------
     # State logic
-    # -----------------------------------------------------------------
 
     def _is_latent(self, civ: Civilian) -> bool:
         # Recommended formal interpretation from the model definition.
@@ -441,9 +432,8 @@ class CoinModel:
             provoked=False,
         )
 
-    # -----------------------------------------------------------------
     # Tick loop / history
-    # -----------------------------------------------------------------
+ 
 
     def _reset_tick_flags(self) -> None:
         self.recent_attacks = 0
@@ -516,9 +506,9 @@ class CoinModel:
             if not self.step():
                 break
 
-    # -----------------------------------------------------------------
+   
     # Outputs / plotting
-    # -----------------------------------------------------------------
+   
 
     def plot_grid(self, ax: plt.Axes) -> None:
         ax.clear()
@@ -665,9 +655,8 @@ class CoinModel:
         return rows
 
 
-# ---------------------------------------------------------------------
 # Utility / export functions
-# ---------------------------------------------------------------------
+
 
 def run_one_simulation(
     effectiveness: float = 0.5,

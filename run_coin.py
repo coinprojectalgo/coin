@@ -11,9 +11,8 @@ from coin_abm import (
 )
 
 
-# ------------------------------------------------------------
 # Interactive prompts
-# ------------------------------------------------------------
+
 
 def _prompt_float(label: str, default: float) -> float:
     raw = input(f"{label} [{default}]: ").strip()
@@ -35,9 +34,8 @@ def _prompt_bool(label: str, default: bool = False) -> bool:
     return raw in {"y", "yes", "true", "1"}
 
 
-# ------------------------------------------------------------
 # CLI
-# ------------------------------------------------------------
+
 
 def build_parser() -> argparse.ArgumentParser:
 
@@ -96,10 +94,8 @@ def build_parser() -> argparse.ArgumentParser:
 
     return parser
 
-
-# ------------------------------------------------------------
 # Interactive parameter collection
-# ------------------------------------------------------------
+
 
 def interactive_parameters() -> dict:
 
@@ -181,18 +177,16 @@ def interactive_parameters() -> dict:
     }
 
 
-# ------------------------------------------------------------
 # Main
-# ------------------------------------------------------------
+
 
 def main() -> None:
 
     parser = build_parser()
     args = parser.parse_args()
 
-    # ------------------------------------
     # Paper batch mode
-    # ------------------------------------
+
 
     if args.mode == "paper":
 
@@ -203,9 +197,8 @@ def main() -> None:
 
         return
 
-    # ------------------------------------
     # CLI simulation mode
-    # ------------------------------------
+
 
     if args.mode == "simulate":
 
@@ -262,9 +255,8 @@ def main() -> None:
 
         return
 
-    # ------------------------------------
     # Default interactive mode
-    # ------------------------------------
+
 
     params = interactive_parameters()
 
